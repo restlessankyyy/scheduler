@@ -2,9 +2,10 @@ name: Deploy to Cloud Run
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
-      - main  # Or another branch if preferred
+      - master  # Or another branch if preferred
   
 
 jobs:
@@ -30,6 +31,9 @@ jobs:
       with:
         terraform_wrapper: false
 
+    - name: Configure GCP credentials
+      run: echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/gcp_credentials.json
+      
     # Terraform Init
     - name: Initialize Terraform
       run: terraform init

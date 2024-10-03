@@ -1,9 +1,19 @@
 # main.tf
 
+variable "project_id" {
+  description = "The GCP project ID"
+  type        = string
+}
+
+variable "region" {
+  description = "The GCP region"
+  type        = string
+}
+
 provider "google" {
   project = var.project_id
   region  = var.region
-  credentials = file("path/to/your/credentials.json")  # replace this for local use
+  credentials = var.  # replace this for local use
 }
 
 resource "google_cloud_run_service" "my_service" {
