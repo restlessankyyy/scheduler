@@ -22,13 +22,9 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           export_default_credentials: true
 
-      - name: Build Docker image
+      - name: Build and Push Docker Image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api/
-
-      - name: Push Docker image to Container Registry
-        run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest .
 
       - name: Output Image URL
         run: echo "::set-output name=image_url::gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest"
@@ -71,3 +67,4 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
+
