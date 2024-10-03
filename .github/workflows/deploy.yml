@@ -25,10 +25,12 @@ jobs:
         run: |
           gcloud auth configure-docker
 
-      - name: Build and Push Docker Image
+      - name: Build, Authenticate, and Push
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest 
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api && \
+          gcloud auth configure-docker && \
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest
+
 
       - name: Output Image URL
         run: echo "::set-output name=image_url::gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest"
