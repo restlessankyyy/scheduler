@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest .
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api
 
       - name: Output Image URL
         run: echo "::set-output name=image_url::gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest"
