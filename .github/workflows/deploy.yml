@@ -36,8 +36,9 @@ jobs:
 
     # Terraform Plan
     - name: Terraform Plan
-      run: terraform plan -out=tfplan
-
+      run: terraform plan -out=tfplan \
+            -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+            -var="region=${{ secrets.GCP_REGION }}"
     # Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
