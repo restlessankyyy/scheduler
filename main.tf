@@ -7,7 +7,7 @@ provider "google" {
 }
 
 resource "google_cloud_run_service" "my_service" {
-  name     = "my-graphql-api"
+  name     = "scheduler"
   location = var.region
 
   template {

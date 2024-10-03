@@ -1,9 +1,11 @@
 name: Deploy to Cloud Run
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main  # Or another branch if preferred
+  
 
 jobs:
   terraform-deploy:
