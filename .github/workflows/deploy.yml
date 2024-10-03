@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest .
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api/
 
       - name: Push Docker image to Container Registry
         run: |
