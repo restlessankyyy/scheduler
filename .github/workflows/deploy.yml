@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - master  # Or another branch if preferred
+      - master 
 
 jobs:
   build-and-push:
@@ -20,11 +20,15 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          export_default_credentials: true
+
+      - name: Login to Google Cloud Registry
+        run: |
+          gcloud auth configure-docker
 
       - name: Build and Push Docker Image
         run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest ./src/scheduler/code/app-api
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest 
 
       - name: Output Image URL
         run: echo "::set-output name=image_url::gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-graphql-api:latest"
