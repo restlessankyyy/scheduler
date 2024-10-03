@@ -10,10 +10,14 @@ variable "region" {
   type        = string
 }
 
+variable "credentials" {
+  description = "The path to the GCP credentials JSON file"
+  type        = string
+}
 provider "google" {
-  project = var.project_id
-  region  = var.region
-  credentials = var.  # replace this for local use
+  project     = var.project_id
+  region      = var.region
+  credentials = file(var.credentials)
 }
 
 resource "google_cloud_run_service" "my_service" {
@@ -53,7 +57,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 
 data "google_iam_policy" "noauth" {
   binding {
-    role = "roles/run.invoker"
+    role    = "roles/run.invoker"
     members = ["allUsers"]
   }
 }
