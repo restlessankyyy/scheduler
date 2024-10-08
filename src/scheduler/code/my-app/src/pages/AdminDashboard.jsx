@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Schedule from '../components/Schedule';
 import Chat from '../components/Chat';
 import styled from "styled-components";
+import UserHeader from '../components/UserHeader';
 
 const DashboardGrid = styled.div`
   display: grid;
@@ -18,7 +19,7 @@ const DashboardGrid = styled.div`
 `;
 
 const MainContent = styled.main`
-  padding: 3rem;
+  padding: 0 3rem;
 
   @media (min-width: 800px) {
     grid-column: 2;
@@ -43,6 +44,7 @@ const AdminDashboard = () => {
     <DashboardGrid>
       <AdminNavbar onSelect={setActiveComponent} />
       <MainContent>
+      <UserHeader />
         <Header />
         {renderComponent()}
       </MainContent>
