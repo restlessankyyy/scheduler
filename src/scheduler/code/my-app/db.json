@@ -1,0 +1,123 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "Boss",
+      "password": "123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "Edda",
+      "password": "321",
+      "role": "user"
+    }
+  ],
+  "questions": [
+    {
+      "id": "1",
+      "text": "How many branches does your business have?"
+    },
+    {
+      "id": "2",
+      "text": "When is your business open?"
+    },
+    {
+      "id": "3",
+      "text": "How much staff do you need every hour?"
+    }
+  ],
+  "employees": [],
+  "responses": [
+    {
+      "id": "a77f",
+      "questionId": "1",
+      "text": "3"
+    },
+    {
+      "id": "77f0",
+      "questionId": "2",
+      "text": "3"
+    },
+    {
+      "id": "8521",
+      "questionId": "3",
+      "text": "3"
+    },
+    {
+      "id": "1b21",
+      "questionId": "1",
+      "text": "3"
+    },
+    {
+      "id": "fe5a",
+      "questionId": "2",
+      "text": "3"
+    },
+    {
+      "id": "a394",
+      "questionId": "3",
+      "text": "3"
+    },
+    {
+      "id": "6d6f",
+      "questionId": "1",
+      "text": "3"
+    },
+    {
+      "id": "a8a2",
+      "questionId": "2",
+      "text": "3"
+    },
+    {
+      "id": "b79f",
+      "questionId": "3",
+      "text": "3"
+    },
+    {
+      "id": "5e2c",
+      "questionId": "1",
+      "text": "3"
+    },
+    {
+      "id": "5a3a",
+      "questionId": "2",
+      "text": "3"
+    },
+    {
+      "id": "1722",
+      "questionId": "3",
+      "text": "3"
+    },
+    {
+      "id": "24c7",
+      "questionId": "1",
+      "text": "4"
+    },
+    {
+      "id": "9808",
+      "questionId": "2",
+      "text": "4"
+    },
+    {
+      "id": "6bf1",
+      "questionId": "3",
+      "text": "4"
+    },
+    {
+      "id": "ad05",
+      "questionId": "1",
+      "text": "3"
+    },
+    {
+      "id": "bdd5",
+      "questionId": "2",
+      "text": "3"
+    },
+    {
+      "id": "d5f5",
+      "questionId": "3",
+      "text": "3"
+    }
+  ]
+}

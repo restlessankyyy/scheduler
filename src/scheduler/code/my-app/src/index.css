@@ -1,0 +1,94 @@
+:root {
+  /* Definiera färger som CSS-variabler */
+  --primary-bg: #000000; /* Mörk bakgrund för navbar */
+  --light-bg: #ffffff;   /* Ljus bakgrund för innehåll */
+  --button-color:#F594B4;
+  ; /* Rosa färg för knappar */
+  --button-text-color: #1a1a1a; /* Textfärg för knappar */
+  --card-bg: #f9e5e5;   /* Ljusare rosa/beige för cards */
+  --green-light: #b2f5ea; /* Ljus mintgrön */
+  --green-dark: #2f855a; /* Mörkare mintgrön */
+  --yellow-light: #fefcbf; /* Ljus gul */
+  --yellow-dark: #f6e05e; /* Mörkare gul */
+
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  box-sizing: border-box;
+  /* padding: 2rem; */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* line-height: 1.5; */
+  /* font-weight: 400; */
+  color: #1a1a1a;
+
+  /* color-scheme: light dark; */
+  /* color: rgba(255, 255, 255, 0.87); */
+  background-color: var(--light-bg);
+
+  /* font-synthesis: none; */
+  /* text-rendering: optimizeLegibility; */
+  /* -webkit-font-smoothing: antialiased; */
+  /* -moz-osx-font-smoothing: grayscale; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Navbar-styling */
+/* nav {
+  background-color: var(--primary-bg);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between; 
+} */
+
+button {
+  border-radius: 5px;
+  border: 1px solid transparent;
+  padding: 0.5em 1em;
+  /* font-size: 1em; */
+  /* font-weight: 500; */
+  font-family: inherit;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+button:hover {
+  background-color: #ae687f;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px black;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+
+/* Dark mode */
+/* @media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: var(--light-bg);
+  } */
+
+  /* a:hover {
+    color: #747bff;
+  } */
+
+  /* Ändra bakgrund för knappar i ljus läge */
+  /* button {
+    background-color: #f9f9f9; 
+}
+  } */
+
