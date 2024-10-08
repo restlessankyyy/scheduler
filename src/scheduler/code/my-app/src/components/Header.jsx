@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { UserContext } from '../context/UserContext'; 
+import { UserContext } from '../context/UserContext';
 
 const HeaderContainer = styled.h1`
   text-align: center;
@@ -8,12 +8,12 @@ const HeaderContainer = styled.h1`
 `;
 
 const Header = () => {
-  const { user } = useContext(UserContext); 
+  const { user } = useContext(UserContext);
 
   return (
     <HeaderContainer>
-      {user ? `Welcome ${user.username}` : "Welcome"} 
-  </HeaderContainer>
+      {user ? `Welcome ${user.username}` : "Welcome"}
+    </HeaderContainer>
   );
 };
 

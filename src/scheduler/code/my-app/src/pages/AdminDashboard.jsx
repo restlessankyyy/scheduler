@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
+import AdminNavbar from '../components/AdminNavbar';
 import Header from '../components/Header';
 import Calender from '../components/Calender';
-import LeaveRequest from '../components/LeaveRequest';
 import Chat from '../components/Chat';
-import EmployeePreferenceForm from '../components/EmployeePreferenceForm';
 import styled from "styled-components";
 
 const DashboardGrid = styled.div`
@@ -34,11 +32,7 @@ const AdminDashboard = () => {
     switch (activeComponent) {
       case 'schedule':
         return <Calender />;
-      // case 'leaveRequest':
-      //   return <LeaveRequest />;
-      // case 'preferences':
-      //   return <EmployeePreferenceForm />;
-      case 'chat':
+      case 'employees':
         return <Chat />;
       default:
         return <Calender />;
@@ -47,7 +41,7 @@ const AdminDashboard = () => {
 
   return (
     <DashboardGrid>
-      <Navbar onSelect={setActiveComponent} />
+      <AdminNavbar onSelect={setActiveComponent} />
       <MainContent>
         <Header/>
         {renderComponent()}
