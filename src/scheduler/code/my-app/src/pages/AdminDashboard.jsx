@@ -28,16 +28,16 @@ const MainContent = styled.main`
 `;
 
 const AdminDashboard = () => {
-  const [activeComponent, setActiveComponent] = useState('calender');
+  const [activeComponent, setActiveComponent] = useState('schedule');
 
   const renderComponent = () => {
     switch (activeComponent) {
-      case 'calender':
+      case 'schedule':
         return <Calender />;
-      case 'leaveRequest':
-        return <LeaveRequest />;
-      case 'preferences':
-        return <EmployeePreferenceForm />;
+      // case 'leaveRequest':
+      //   return <LeaveRequest />;
+      // case 'preferences':
+      //   return <EmployeePreferenceForm />;
       case 'chat':
         return <Chat />;
       default:

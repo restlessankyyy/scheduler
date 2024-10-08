@@ -16,7 +16,7 @@ const Employer = () => {
   const navigate = useNavigate();
 
   const handleFinishOnboarding = () => {
-    navigate("/add-employer");
+    navigate("/add-employee");
   };
 
   return (

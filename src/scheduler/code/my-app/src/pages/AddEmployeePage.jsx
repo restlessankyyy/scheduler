@@ -25,13 +25,15 @@ const MainContent = styled.main`
   }
 `;
 
-const AddEmployerPage = () => {
-  const [activeComponent, setActiveComponent] = useState('employees');
+const AddEmployeePage = () => {
+  const [activeComponent, setActiveComponent] = useState('AddEmployee');
 
   const renderComponent = () => {
     switch (activeComponent) {
       case 'schedule':
         return <Calender />;
+      case 'AddEmployee':
+        return <AddEmployeeForm />;
       case 'employees':
         return <AddEmployeeForm />;
       default:
@@ -43,7 +45,7 @@ const AddEmployerPage = () => {
     <DashboardGrid>
       <AdminNavbar onSelect={setActiveComponent} />
       <MainContent>
-        <UserHeader/>
+        <UserHeader />
         {renderComponent()}
       </MainContent>
     </DashboardGrid>
@@ -51,4 +53,4 @@ const AddEmployerPage = () => {
 }
 
 
-export default AddEmployerPage;
+export default AddEmployeePage;

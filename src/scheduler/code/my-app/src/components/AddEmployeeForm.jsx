@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useMutation, gql } from '@apollo/client';
 import styled from "styled-components";
 import defaultPersonIcon from "../assets/profile.png";
-import axios from "axios";
 
 const AddEmployeeFormContainer = styled.section`
   width: 513px;
@@ -146,7 +145,7 @@ const AddEmployeeForm = () => {
         <InputField {...register('overtimePreferences')} placeholder="Overtime Preferences (comma-separated)" />
 
         <Button type="submit" disabled={loading}>Add Employee</Button>
-        {error && <p>Error: {error.message}</p>}
+        {/* {error && <p>Error: {error.message}</p>} */}
       </form>
     </AddEmployeeFormContainer>
   );
@@ -154,133 +153,3 @@ const AddEmployeeForm = () => {
 
 export default AddEmployeeForm;
 
-// import React from 'react';
-// import { useForm } from 'react-hook-form';
-// import styled from 'styled-components';
-
-// const AddEmployeeFormContainer = styled.section`
-//   padding: 1rem;
-//   border-radius: 8px;
-// `;
-
-// const Button = styled.button`
-//   display: block; /* Gör knappen till en blocknivå för att centrera den */
-//   width: 200px; /* Sätt en fast bredd */
-//   margin: 1rem auto; /* Centrera knappen och ge lite mellanrum */
-//   padding: 10px; /* Padding för att ge lite utrymme */
-//   color: black;
-//   border: none;
-//   border-radius: 5px;
-//   padding: 10px;
-//   cursor: pointer;
-//   width: 200px;
-//   margin-bottom: 1rem; /* Mellanrum mellan knappen och inputfältet */
-
-//   &:hover {
-//     background-color: #45a049;
-//   }
-// `;
-
-// const AddEmployeeForm = () => {
-//   const { register, handleSubmit } = useForm();
-
-//   const onSubmit = (data) => {
-//     console.log('Preference Form Data:', data);
-//   };
-
-// const onSubmit = (data) => {
-//   const formData = {
-//     ...data,
-//     ProfileImage: profileImage,
-//   };
-
-//   axios
-//     .post("http://localhost:3001/employees", formData)
-//     .then((response) => {
-//       console.log("Employee added:", response.data);
-//       alert("Employee added successfully!");
-//       reset();
-//       setProfileImage(null);
-//     })
-//     .catch((error) => {
-//       console.error("There was an error adding the employee:", error);
-//     });
-// };
-
-// const onSubmit = (data) => {
-//   createEmployee({
-//     variables: {
-//       name: data.Name,
-//       email: data.Email,
-//       needsChildCare: false,
-//       prefersOvertime: false,
-//       role: "",
-//       department: "",
-//       availability: [],
-//       overtimePreferences: [],
-//     },
-//   });
-// };
-
-// Using useMutation hook with the defined mutation
-// const [createEmployee] = useMutation(CREATE_EMPLOYEE_MUTATION, {
-//   onCompleted: () => {
-//     console.log('Employee added successfully!');
-//     alert("Employee added successfully!");
-//     reset();
-//     setProfileImage(null);
-//   },
-//   onError: (error) => {
-//     console.error("There was an error adding the employee:", error);
-//     alert("Error adding employee");
-//   },
-// });
-
-//   return (
-//     <AddEmployeeFormContainer>
-//       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <InputField {...register("Name")} placeholder="Name" isNameField />
-        <InputField {...register("Email")} placeholder="Email" />
-        <InputField {...register("Address")} placeholder="Address" />
-        <InputField {...register("DOB")} placeholder="Date of birth" />
-        <InputField
-          {...register("ICE")}
-          placeholder="In case of emergency contact"
-        /> */}
-//       <div>
-//           <label></label>
-//           <input {...register('ProfileImage')} placeholder="Image" />
-//         </div>
-//         <div>
-//           <label></label>
-//           <input {...register('Name')} placeholder="Name" />
-//         </div>
-//         <div>
-//           <label></label>
-//           <input {...register('Email')} placeholder="Email" />
-//         </div>
-//         <div>
-//           <label></label>
-//           <input {...register('Address')} placeholder="Address" />
-//         </div>
-//         <div>
-//           <label></label>
-//           <input {...register('DOB')} placeholder="Date of birth" />
-//         </div>
-//         <div>
-//           <label></label>
-//           <input {...register('ICE')} placeholder="In case of emergency contact" />
-//         </div>
-
-//         <input type="submit" value="Add Employees" />
-//         <Button
-//         >
-//           Add employees
-//         </Button>
-
-//       </form>
-//     </AddEmployeeFormContainer>
-//   );
-// };
-
-// export default AddEmployeeForm;

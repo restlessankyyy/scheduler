@@ -13,8 +13,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       {user ? `Welcome ${user.username}` : "Welcome"} 
-      {user?.role === "admin" ? " (Admin)" : ""}
-    </HeaderContainer>
+  </HeaderContainer>
   );
 };
 
