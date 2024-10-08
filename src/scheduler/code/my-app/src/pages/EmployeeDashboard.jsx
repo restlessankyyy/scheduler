@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import Calender from '../components/Calender';
+import Schedule from '../components/Schedule';
 import LeaveRequest from '../components/LeaveRequest';
 import Chat from '../components/Chat';
 import EmployeePreferenceForm from '../components/EmployeePreferenceForm';
@@ -33,7 +33,7 @@ const EmployeeDashboard = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case 'calender':
-        return <Calender />;
+        return <Schedule />;
       case 'leaveRequest':
         return <LeaveRequest />;
       case 'preferences':
@@ -41,7 +41,7 @@ const EmployeeDashboard = () => {
       case 'chat':
         return <Chat />;
       default:
-        return <Calender />;
+        return <Schedule />;
     }
   };
 
@@ -49,7 +49,7 @@ const EmployeeDashboard = () => {
     <DashboardGrid>
       <Navbar onSelect={setActiveComponent} />
       <MainContent>
-        <Header/>
+        <Header />
         {renderComponent()}
       </MainContent>
     </DashboardGrid>

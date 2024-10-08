@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AdminNavbar from '../components/AdminNavbar';
 import Header from '../components/Header';
-import Calender from '../components/Calender';
+import Schedule from '../components/Schedule';
 import Chat from '../components/Chat';
 import styled from "styled-components";
 
@@ -31,11 +31,11 @@ const AdminDashboard = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case 'schedule':
-        return <Calender />;
+        return <Schedule />;
       case 'employees':
         return <Chat />;
       default:
-        return <Calender />;
+        return <Schedule />;
     }
   };
 
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     <DashboardGrid>
       <AdminNavbar onSelect={setActiveComponent} />
       <MainContent>
-        <Header/>
+        <Header />
         {renderComponent()}
       </MainContent>
     </DashboardGrid>

@@ -20,7 +20,7 @@ const events = [
   },
 ];
 
-const Calender = () => {
+const Schedule = () => {
   return (
     <div style={{ height: 500, margin: '50px 0' }}>
       <Calendar
@@ -34,4 +34,4 @@ const Calender = () => {
   );
 };
 
-export default Calender;
+export default Schedule;

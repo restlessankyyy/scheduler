@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AdminNavbar from '../components/AdminNavbar';
 import UserHeader from '../components/UserHeader';
-import Calender from '../components/Calender';
+import Schedule from '../components/Schedule';
 import AddEmployeeForm from '../components/AddEmployeeForm';
 import styled from "styled-components";
 
@@ -31,7 +31,7 @@ const AddEmployeePage = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case 'schedule':
-        return <Calender />;
+        return <Schedule />;
       case 'AddEmployee':
         return <AddEmployeeForm />;
       case 'employees':
