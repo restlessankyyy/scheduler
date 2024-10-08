@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom'; // Importera useNavigate
 import defaultPersonIcon from '../assets/profile.png';
 
 const GET_EMPLOYEES_QUERY = gql`
@@ -149,6 +150,7 @@ const SendButton = styled.button`
 const ManageEmployees = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate(); // Använd useNavigate
 
   useEffect(() => {
     if (data) {
@@ -166,7 +168,7 @@ const ManageEmployees = () => {
           <Title>Manage your employees</Title>
           <Subtitle>Let me know if you need any help.</Subtitle>
         </div>
-        <AddEmployeeButton>Add employee</AddEmployeeButton>
+        <AddEmployeeButton onClick={() => navigate('/add-employee')}>Add employee</AddEmployeeButton>
       </HeaderSection>
 
       <SortOptions>

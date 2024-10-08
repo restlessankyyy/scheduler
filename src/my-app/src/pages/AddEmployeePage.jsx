@@ -3,6 +3,7 @@ import AdminNavbar from '../components/AdminNavbar';
 import UserHeader from '../components/UserHeader';
 import Schedule from '../components/Schedule';
 import AddEmployeeForm from '../components/AddEmployeeForm';
+import ManageEmployees from '../components/ManageEmployees';
 import styled from "styled-components";
 
 const DashboardGrid = styled.div`
@@ -25,28 +26,33 @@ const MainContent = styled.main`
   }
 `;
 
-const AddEmployeePage = () => {
-  const [activeComponent, setActiveComponent] = useState('AddEmployee');
+  const AddEmployeePage = () => {
+    const navigateTo = {
+      schedule: '/admin-dashboard',  // Ändra till den rutt där Schedule visas
+      employees: '/admin-dashboard' // Ändra till den rutt där ManageEmployees visas
+    };
+  // const [activeComponent, setActiveComponent] = useState('AddEmployee');
 
-  const renderComponent = () => {
-    switch (activeComponent) {
-      case 'schedule':
-        return <Schedule />;
-      case 'AddEmployee':
-        return <AddEmployeeForm />;
-      case 'employees':
-        return <AddEmployeeForm />;
-      default:
-        return <AddEmployeeForm />;
-    }
-  };
+  // const renderComponent = () => {
+  //   switch (activeComponent) {
+  //     case 'schedule':
+  //       return <Schedule />;
+  //     case 'AddEmployee':
+  //       return <AddEmployeeForm />;
+  //     case 'employees':
+  //       return <ManageEmployees />;
+  //     default:
+  //       return <AddEmployeeForm />;
+  //   }
+  // };
 
   return (
     <DashboardGrid>
-      <AdminNavbar onSelect={setActiveComponent} />
+      <AdminNavbar navigateTo={navigateTo} />
       <MainContent>
         <UserHeader />
-        {renderComponent()}
+        <AddEmployeeForm />
+        {/* {renderComponent()} */}
       </MainContent>
     </DashboardGrid>
   );

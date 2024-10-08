@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 
 const NavbarContainer = styled.nav`
     background-color: var(--primary-bg);
@@ -16,11 +18,21 @@ const NavbarContainer = styled.nav`
   }
 `;
 
-const AdminNavbar = ({ onSelect }) => {
+const AdminNavbar = ({ onSelect, navigateTo }) => {
+  const navigate = useNavigate();
+
+  const handleSelect = (component) => {
+    if (navigateTo) {
+      navigate(navigateTo[component]); // Använd navigateTo-objekt för att bestämma rutt
+    }
+    if (onSelect) {
+      onSelect(component);
+    }
+  };
   return (
     <NavbarContainer>
-      <button onClick={() => onSelect('schedule')}>Schedule</button>
-      <button onClick={() => onSelect('employees')}>Employees</button>
+      <button onClick={() => handleSelect('schedule')}>Schedule</button>
+      <button onClick={() => handleSelect('employees')}>Employees</button>
     </NavbarContainer>
   );
 };
