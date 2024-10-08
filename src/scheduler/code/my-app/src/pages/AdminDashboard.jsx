@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AdminNavbar from '../components/AdminNavbar';
 import Header from '../components/Header';
 import Schedule from '../components/Schedule';
-import Chat from '../components/Chat';
+import ManageEmployees from '../components/ManageEmployees';
 import styled from "styled-components";
 import UserHeader from '../components/UserHeader';
 
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
       case 'schedule':
         return <Schedule />;
       case 'employees':
-        return <Chat />;
+        return <ManageEmployees />;
       default:
         return <Schedule />;
     }
