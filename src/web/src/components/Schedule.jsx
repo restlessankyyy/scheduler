@@ -286,6 +286,23 @@ const Schedule = () => {
   });
 
   useEffect(() => {
+    const fetchShiftData = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/shifts');
+        const data = await response.json();
+
+        // Restructure the fetched shift data
+        const reshapedData = data.map(shift => shift.shifts);
+        setShiftData(reshapedData);
+      } catch (error) {
+        console.error('Error fetching shift data:', error);
+      }
+    };
+
+    fetchShiftData();
+  }, []);
+
+  useEffect(() => {
     if (data) {
       setEmployees(data.employees);
     }
@@ -416,6 +433,7 @@ const Schedule = () => {
         </NavContainer>
       </SortOptions>
       <Divider />
+
       <ScheduleTable>
         {/* Kolumnrubriker */}
         <TableHeader>Week {selectedWeek}</TableHeader>
@@ -436,7 +454,6 @@ const Schedule = () => {
 
             {/* Skiftceller */}
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
-              // Använd shiftData för att avgöra skifttyp och tid
               const shiftType = shiftData[rowIndex][dayIndex];
               const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' :
                 shiftType === 'Shift 2' ? '16:00 - 21:00' :
@@ -456,13 +473,6 @@ const Schedule = () => {
       </ScheduleTable>
 
 
-      {/* <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        views={['month', 'week']}
-      /> */}
       <ChartContainer>
         <ChartWrapper>
           <ChartTitle>Schemafyllnad</ChartTitle>
@@ -515,3 +525,42 @@ const Schedule = () => {
 
 export default Schedule;
 
+
+      // {/* <ScheduleTable>
+      //   {/* Kolumnrubriker */}
+      //   <TableHeader>Week {selectedWeek}</TableHeader>
+      //   {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
+      //     <TableHeader key={day}>{day}</TableHeader>
+      //   ))}
+
+      //   {/* Rader för anställda */}
+      //   {employees.slice(0, 6).map((employee, rowIndex) => (
+      //     <React.Fragment key={employee.id}>
+      //       {/* Första kolumnen: anställds info */}
+      //       <TableCell key={`employee-${employee.id}`}>
+      //         <EmployeeInfo>
+      //           <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
+      //           <EmployeeName>{employee.name}</EmployeeName>
+      //         </EmployeeInfo>
+      //       </TableCell>
+
+      //       {/* Skiftceller */}
+      //       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
+      //         // Använd shiftData för att avgöra skifttyp och tid
+      //         const shiftType = shiftData[rowIndex][dayIndex];
+      //         const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' :
+      //           shiftType === 'Shift 2' ? '16:00 - 21:00' :
+      //             'All day';
+
+      //         return (
+      //           <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
+      //             <ShiftBox type={shiftType}>
+      //               <div>{shiftType}</div>
+      //               <div>{shiftTime}</div>
+      //             </ShiftBox>
+      //           </TableCell>
+      //         );
+      //       })}
+      //     </React.Fragment>
+      //   ))}
+      // </ScheduleTable> */}

@@ -13,6 +13,80 @@
       "role": "user"
     }
   ],
+  "shifts": [
+    {
+      "id": "1",
+      "shifts": [
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1"
+      ]
+    },
+    {
+      "id": "2",
+      "shifts": [
+        "Shift 2",
+        "All day",
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1",
+        "Shift 2"
+      ]
+    },
+    {
+      "id": "3",
+      "shifts": [
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1"
+      ]
+    },
+    {
+      "id": "4",
+      "shifts": [
+        "All day",
+        "Shift 1",
+        "Shift 2",
+        "All day",
+        "Shift 1",
+        "Shift 2",
+        "All day"
+      ]
+    },
+    {
+      "id": "5",
+      "shifts": [
+        "Shift 1",
+        "All day",
+        "Shift 2",
+        "Shift 1",
+        "All day",
+        "Shift 2",
+        "Shift 1"
+      ]
+    },
+    {
+      "id": "6",
+      "shifts": [
+        "Shift 2",
+        "Shift 1",
+        "All day",
+        "Shift 2",
+        "Shift 1",
+        "All day",
+        "Shift 2"
+      ]
+    }
+  ],
   "questions": [
     {
       "id": "1",
@@ -836,6 +910,111 @@
     },
     {
       "id": "28d9",
+      "questionId": "3",
+      "text": "5"
+    },
+    {
+      "id": "afda",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "e23a",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "7c70",
+      "questionId": "3",
+      "text": "4"
+    },
+    {
+      "id": "afab",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "3779",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "b345",
+      "questionId": "3",
+      "text": "5"
+    },
+    {
+      "id": "155b",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "5605",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "8e43",
+      "questionId": "3",
+      "text": "5"
+    },
+    {
+      "id": "d951",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "e3f2",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "97fa",
+      "questionId": "3",
+      "text": "5"
+    },
+    {
+      "id": "1b23",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "b558",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "fb9f",
+      "questionId": "3",
+      "text": "5"
+    },
+    {
+      "id": "601b",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "1339",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "3fa8",
+      "questionId": "3",
+      "text": "4"
+    },
+    {
+      "id": "e7a1",
+      "questionId": "1",
+      "text": "2"
+    },
+    {
+      "id": "b4ec",
+      "questionId": "2",
+      "text": "10-22"
+    },
+    {
+      "id": "3aff",
       "questionId": "3",
       "text": "5"
     }
