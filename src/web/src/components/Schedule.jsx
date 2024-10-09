@@ -171,6 +171,17 @@ const SendButton = styled.button`
   }
 `;
 
+const ChartContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 const locales = { sv };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales, defaultLocale: 'sv' });
 
@@ -193,6 +204,12 @@ const Schedule = () => {
   const [selectedWeek, setSelectedWeek] = useState(41);
   const navigate = useNavigate(); // Använd useNavigate
 
+  const [progressData, setProgressData] = useState({
+    completed: 80,
+    backup: 70,
+    preferences: 60,
+  });
+
   useEffect(() => {
     if (data) {
       setEmployees(data.employees);
@@ -201,6 +218,12 @@ const Schedule = () => {
 
   if (loading) return <p>Loading employees...</p>;
   if (error) return <p>Error loading employees!</p>;
+
+  const getColor = (percentage) => {
+    if (percentage < 50) return '#ff4e42'; // Red
+    if (percentage < 90) return '#ffa400'; // Yellow
+    return '#0cce6b'; // Green
+  };
 
   return (
     <Container>
@@ -240,6 +263,32 @@ const Schedule = () => {
         endAccessor="end"
         views={['month', 'week']}
       />
+      <ChartContainer>
+        <CircularProgressbar
+          value={progressData.completed}
+          text={`${progressData.completed}%`}
+          styles={buildStyles({
+            textColor: getColor(progressData.completed),
+            pathColor: getColor(progressData.completed),
+          })}
+        />
+        <CircularProgressbar
+          value={progressData.backup}
+          text={`${progressData.backup}%`}
+          styles={buildStyles({
+            textColor: getColor(progressData.backup),
+            pathColor: getColor(progressData.backup),
+          })}
+        />
+        <CircularProgressbar
+          value={progressData.preferences}
+          text={`${progressData.preferences}%`}
+          styles={buildStyles({
+            textColor: getColor(progressData.preferences),
+            pathColor: getColor(progressData.preferences),
+          })}
+        />
+      </ChartContainer>
       <Footer>
         <Input placeholder="Search for or ask me to do anything" />
         <SendButton>➔</SendButton>

@@ -27,6 +27,9 @@ npm install styled-components
 ### Install Apollo Client 
 npm install @apollo/client graphql
 
+### Install circular-progress
+npm install react-circular-progressbar
+
 
 ## json-server (only for testing frontend)
 ### Install json-server
