@@ -246,8 +246,8 @@ const ShiftBox = styled.div`
   border-radius: 4px;
   background-color: ${({ type }) =>
     type === 'Shift 1' ? '#fff8dc' :
-    type === 'Shift 2' ? '#d8ebff' :
-    '#f5f5f5'};
+      type === 'Shift 2' ? '#d8ebff' :
+        '#f5f5f5'};
   color: ${({ type }) => (type === 'Unavailable' ? 'gray' : 'black')};
 `;
 
@@ -273,8 +273,8 @@ const Schedule = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(41);
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate(); // Använd useNavigate
+
   const [shiftData, setShiftData] = useState(
     Array(6).fill().map(() => Array(7).fill('Unavailable'))
   );
@@ -291,9 +291,6 @@ const Schedule = () => {
     }
   }, [data]);
 
-  if (loading) return <p>Loading employees...</p>;
-  if (error) return <p>Error loading employees!</p>;
-
   const getColor = (percentage) => {
     if (percentage < 50) return '#ff4e42'; // Red
     if (percentage < 90) return '#ffa400'; // Yellow
@@ -305,6 +302,7 @@ const Schedule = () => {
       const newShiftData = prevShiftData.map((row, rIdx) =>
         row.map((shift, dIdx) => {
           if (rIdx === rowIndex && dIdx === dayIndex) {
+            // Cykla mellan 'Shift 1', 'Shift 2', och 'Unavailable'
             if (shift === 'Unavailable') return 'Shift 1';
             if (shift === 'Shift 1') return 'Shift 2';
             return 'Unavailable';
@@ -315,7 +313,77 @@ const Schedule = () => {
       return newShiftData;
     });
   };
-  
+
+
+  const calculateProgress = (shiftData) => {
+    let completedDays = 0;
+    const requiredShiftsPerDay = 5;
+
+    // Iterera genom dagarna
+    for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+      let shiftCount = 0;
+
+      // Räkna skift av rätt typ per dag
+      for (let rowIndex = 0; rowIndex < shiftData.length; rowIndex++) {
+        if (shiftData[rowIndex][dayIndex] === 'Shift 1' || shiftData[rowIndex][dayIndex] === 'Shift 2') {
+          shiftCount++;
+        }
+      }
+
+      // Öka progress om dagen är färdig
+      if (shiftCount >= requiredShiftsPerDay) {
+        completedDays++;
+      }
+    }
+
+    // Räkna ut hur mycket av schemat som är klart och returnera procent
+    return (completedDays / 7) * 100;
+  };
+
+  const analyzeShiftCompletion = async (shiftData) => {
+    try {
+      const response = await fetch("https://<YOUR_CLOUD_FUNCTION_URL>", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ shiftData })
+      });
+
+      const result = await response.json();
+      return result.completionPercentage;
+    } catch (error) {
+      console.error("Error calling Google Cloud Function:", error);
+      return calculateProgress(shiftData); // Backup-beregning om Google Cloud misslyckas
+    }
+  };
+
+  // Uppdatera progress-data
+  useEffect(() => {
+    const updateProgress = async () => {
+      const progress = await analyzeShiftCompletion(shiftData);
+      const clampedProgress = Math.max(0, Math.min(100, progress)); // Klampa värdet mellan 0 och 100
+      setProgressData((prevData) => ({
+        ...prevData,
+        completed: clampedProgress,
+      }));
+    };
+
+    updateProgress();
+  }, [shiftData]);
+
+
+  // useEffect(() => {
+  //   const progress = calculateProgress(shiftData);
+  //   setProgressData((prevData) => ({
+  //     ...prevData,
+  //     completed: progress
+  //   }));
+  // }, [shiftData]);
+
+  if (loading) return <p>Loading employees...</p>;
+  if (error) return <p>Error loading employees!</p>;
+
 
   return (
     <Container>
@@ -349,75 +417,89 @@ const Schedule = () => {
       </SortOptions>
       <Divider />
       <ScheduleTable>
+        {/* Kolumnrubriker */}
+        <TableHeader>Week {selectedWeek}</TableHeader>
+        {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
+          <TableHeader key={day}>{day}</TableHeader>
+        ))}
 
-  <TableHeader>Week {selectedWeek}</TableHeader>
-  {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
-    <TableHeader key={day}>{day}</TableHeader>
-  ))}
+        {/* Rader för anställda */}
+        {employees.slice(0, 6).map((employee, rowIndex) => (
+          <React.Fragment key={employee.id}>
+            {/* Första kolumnen: anställds info */}
+            <TableCell key={`employee-${employee.id}`}>
+              <EmployeeInfo>
+                <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
+                <EmployeeName>{employee.name}</EmployeeName>
+              </EmployeeInfo>
+            </TableCell>
 
-  {employees.slice(0, 6).map((employee, rowIndex) => (
-    <React.Fragment key={employee.id}>
+            {/* Skiftceller */}
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
+              // Använd shiftData för att avgöra skifttyp och tid
+              const shiftType = shiftData[rowIndex][dayIndex];
+              const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' :
+                shiftType === 'Shift 2' ? '16:00 - 21:00' :
+                  'All day';
 
-      <TableCell key={`employee-${employee.id}`}>
-        <EmployeeInfo>
-          <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
-          <EmployeeName>{employee.name}</EmployeeName>
-        </EmployeeInfo>
-      </TableCell>
-      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
+              return (
+                <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
+                  <ShiftBox type={shiftType}>
+                    <div>{shiftType}</div>
+                    <div>{shiftTime}</div>
+                  </ShiftBox>
+                </TableCell>
+              );
+            })}
+          </React.Fragment>
+        ))}
+      </ScheduleTable>
 
-        const shiftType = shiftData[rowIndex][dayIndex];
-        const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' : 
-                          shiftType === 'Shift 2' ? '16:00 - 21:00' : 
-                          'All day';
 
-        return (
-          <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
-            <ShiftBox type={shiftType}>
-              <div>{shiftType}</div>
-              <div>{shiftTime}</div>
-            </ShiftBox>
-          </TableCell>
-        );
-      })}
-    </React.Fragment>
-  ))}
-</ScheduleTable>
-<ChartContainer>
-      <ChartWrapper>
-        <ChartTitle>Schemafyllnad</ChartTitle>
-        <SmallCircularProgressbar
-          value={progressData.completed}
-          text={`${progressData.completed}%`}
-          styles={buildStyles({
-            textColor: getColor(progressData.completed),
-            pathColor: getColor(progressData.completed),
-          })}
-        />
-      </ChartWrapper>
-      <ChartWrapper>
-        <ChartTitle>Reservtillgänglighet</ChartTitle>
-        <SmallCircularProgressbar
-          value={progressData.backup}
-          text={`${progressData.backup}%`}
-          styles={buildStyles({
-            textColor: getColor(progressData.backup),
-            pathColor: getColor(progressData.backup),
-          })}
-        />
-      </ChartWrapper>
-      <ChartWrapper>
-        <ChartTitle>Matchning av preferenser</ChartTitle>
-        <SmallCircularProgressbar
-          value={progressData.preferences}
-          text={`${progressData.preferences}%`}
-          styles={buildStyles({
-            textColor: getColor(progressData.preferences),
-            pathColor: getColor(progressData.preferences),
-          })}
-        />
-      </ChartWrapper>
-    </ChartContainer>
+      {/* <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        views={['month', 'week']}
+      /> */}
+      <ChartContainer>
+        <ChartWrapper>
+          <ChartTitle>Schemafyllnad</ChartTitle>
+
+          <SmallCircularProgressbar
+            value={progressData.completed}
+            text={`${progressData.completed.toFixed(0)}%`} 
+            styles={buildStyles({
+              textColor: getColor(progressData.completed),
+              pathColor: getColor(progressData.completed),
+            })}
+          />
+
+        </ChartWrapper>
+        <ChartWrapper>
+          <ChartTitle>Reservtillgänglighet</ChartTitle>
+          <SmallCircularProgressbar
+            value={progressData.backup}
+            text={`${progressData.backup}%`}
+            styles={buildStyles({
+              textColor: getColor(progressData.backup),
+              pathColor: getColor(progressData.backup),
+            })}
+          />
+        </ChartWrapper>
+        <ChartWrapper>
+          <ChartTitle>Matchning av preferenser</ChartTitle>
+          <SmallCircularProgressbar
+            value={progressData.preferences}
+            text={`${progressData.preferences}%`}
+            styles={buildStyles({
+              textColor: getColor(progressData.preferences),
+              pathColor: getColor(progressData.preferences),
+            })}
+          />
+        </ChartWrapper>
+      </ChartContainer>
 
       <Footer>
         <Input placeholder="Search for or ask me to do anything" />
