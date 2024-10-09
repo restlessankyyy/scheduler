@@ -273,7 +273,7 @@ const Schedule = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(41);
-  const navigate = useNavigate(); // Använd useNavigate
+  const navigate = useNavigate(); 
 
   const [shiftData, setShiftData] = useState(
     Array(6).fill().map(() => Array(7).fill('Unavailable'))
