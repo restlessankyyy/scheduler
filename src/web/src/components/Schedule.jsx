@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import sv from 'date-fns/locale/sv';
 import { useQuery, gql } from '@apollo/client';
-import { useNavigate } from 'react-router-dom'; // Importera useNavigate
+import { useNavigate } from 'react-router-dom';
 import defaultPersonIcon from '../assets/profile.png';
+
 
 const GET_EMPLOYEES_QUERY = gql`
   query GetEmployees {
@@ -173,13 +176,30 @@ const SendButton = styled.button`
 
 const ChartContainer = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+  justify-content: space-around;
+  align-items: center;
+  // margin-top: 2rem;
+  // margin-bottom: 2rem;
+  width: 70%;
+  margin: 2rem auto;
+`;
+
+const ChartWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
+`;
+
+const ChartTitle = styled.h3`
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+`;
+
+const SmallCircularProgressbar = styled(CircularProgressbar)`
+  width: 60%; // Reducerar storleken till 60% av standardstorleken
 `;
 
 const locales = { sv };
@@ -198,16 +218,71 @@ const events = [
   },
 ];
 
+
+const ScheduleTable = styled.div`
+  display: grid;
+  grid-template-columns: 2fr repeat(7, 1fr); /* Dubbelt så bred första kolumn */
+  gap: 1px;
+  background-color: #ddd;
+  margin-top: 1rem;
+`;
+
+const TableHeader = styled.div`
+  background-color: #f0f0f0;
+  font-weight: bold;
+  padding: 0.5rem;
+  text-align: center;
+`;
+
+const TableCell = styled.div`
+  background-color: white;
+  padding: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+`;
+
+const ShiftBox = styled.div`
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: ${({ type }) =>
+    type === 'Shift 1' ? '#fff8dc' :
+    type === 'Shift 2' ? '#d8ebff' :
+    '#f5f5f5'};
+  color: ${({ type }) => (type === 'Unavailable' ? 'gray' : 'black')};
+`;
+
+const EmployeeInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const EmployeeImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;
+
+const EmployeeName = styled.span`
+  font-size: 0.9rem;
+  font-weight: bold;
+`;
+
+
 const Schedule = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(41);
   const navigate = useNavigate(); // Använd useNavigate
+  
+  const [shiftData, setShiftData] = useState(
+    Array(6).fill().map(() => Array(7).fill('Unavailable'))
+  );
 
   const [progressData, setProgressData] = useState({
     completed: 80,
     backup: 70,
-    preferences: 60,
+    preferences: 90,
   });
 
   useEffect(() => {
@@ -224,6 +299,24 @@ const Schedule = () => {
     if (percentage < 90) return '#ffa400'; // Yellow
     return '#0cce6b'; // Green
   };
+
+  const handleShiftChange = (rowIndex, dayIndex) => {
+    setShiftData((prevShiftData) => {
+      const newShiftData = prevShiftData.map((row, rIdx) =>
+        row.map((shift, dIdx) => {
+          if (rIdx === rowIndex && dIdx === dayIndex) {
+            // Cykla mellan 'Shift 1', 'Shift 2', och 'Unavailable'
+            if (shift === 'Unavailable') return 'Shift 1';
+            if (shift === 'Shift 1') return 'Shift 2';
+            return 'Unavailable';
+          }
+          return shift;
+        })
+      );
+      return newShiftData;
+    });
+  };
+  
 
   return (
     <Container>
@@ -256,15 +349,57 @@ const Schedule = () => {
         </NavContainer>
       </SortOptions>
       <Divider />
-      <Calendar
+      <ScheduleTable>
+  {/* Kolumnrubriker */}
+  <TableHeader>Week {selectedWeek}</TableHeader>
+  {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
+    <TableHeader key={day}>{day}</TableHeader>
+  ))}
+
+  {/* Rader för anställda */}
+  {employees.slice(0, 6).map((employee, rowIndex) => (
+    <React.Fragment key={employee.id}>
+      {/* Första kolumnen: anställds info */}
+      <TableCell key={`employee-${employee.id}`}>
+        <EmployeeInfo>
+          <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
+          <EmployeeName>{employee.name}</EmployeeName>
+        </EmployeeInfo>
+      </TableCell>
+
+      {/* Skiftceller */}
+      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
+        // Använd shiftData för att avgöra skifttyp och tid
+        const shiftType = shiftData[rowIndex][dayIndex];
+        const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' : 
+                          shiftType === 'Shift 2' ? '16:00 - 21:00' : 
+                          'All day';
+
+        return (
+          <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
+            <ShiftBox type={shiftType}>
+              <div>{shiftType}</div>
+              <div>{shiftTime}</div>
+            </ShiftBox>
+          </TableCell>
+        );
+      })}
+    </React.Fragment>
+  ))}
+</ScheduleTable>
+
+
+      {/* <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
         views={['month', 'week']}
-      />
-      <ChartContainer>
-        <CircularProgressbar
+      /> */}
+<ChartContainer>
+      <ChartWrapper>
+        <ChartTitle>Schemafyllnad</ChartTitle>
+        <SmallCircularProgressbar
           value={progressData.completed}
           text={`${progressData.completed}%`}
           styles={buildStyles({
@@ -272,7 +407,10 @@ const Schedule = () => {
             pathColor: getColor(progressData.completed),
           })}
         />
-        <CircularProgressbar
+      </ChartWrapper>
+      <ChartWrapper>
+        <ChartTitle>Reservtillgänglighet</ChartTitle>
+        <SmallCircularProgressbar
           value={progressData.backup}
           text={`${progressData.backup}%`}
           styles={buildStyles({
@@ -280,7 +418,10 @@ const Schedule = () => {
             pathColor: getColor(progressData.backup),
           })}
         />
-        <CircularProgressbar
+      </ChartWrapper>
+      <ChartWrapper>
+        <ChartTitle>Matchning av preferenser</ChartTitle>
+        <SmallCircularProgressbar
           value={progressData.preferences}
           text={`${progressData.preferences}%`}
           styles={buildStyles({
@@ -288,7 +429,9 @@ const Schedule = () => {
             pathColor: getColor(progressData.preferences),
           })}
         />
-      </ChartContainer>
+      </ChartWrapper>
+    </ChartContainer>
+
       <Footer>
         <Input placeholder="Search for or ask me to do anything" />
         <SendButton>➔</SendButton>
@@ -302,3 +445,60 @@ const Schedule = () => {
 
 
 export default Schedule;
+
+
+// {/* <ScheduleTable>
+// {/* Kolumnrubriker */}
+// <TableHeader>Week {selectedWeek}</TableHeader>
+// {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
+//   <TableHeader key={day}>{day}</TableHeader>
+// ))}
+
+// {/* Rader för anställda */}
+// {employees.slice(0, 6).map((employee, rowIndex) => (
+//   <>
+//     {/* Första kolumnen: anställds info */}
+//     <TableCell key={`employee-${employee.id}`}>
+//       <EmployeeInfo>
+//         <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
+//         <EmployeeName>{employee.name}</EmployeeName>
+//       </EmployeeInfo>
+//     </TableCell>
+
+//     {/* Skiftceller */}
+//     {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
+//       // Generera skiftdata baserat på rad och kolumnindex
+//       let shiftType = 'Unavailable';
+//       let shiftTime = 'All day';
+      
+//       if (rowIndex === 0 && dayIndex < 5) {
+//         shiftType = 'Shift 1';
+//         shiftTime = '10:00 - 16:00';
+//       } else if (rowIndex === 1 && dayIndex % 2 === 0 && dayIndex < 6) {
+//         shiftType = 'Shift 2';
+//         shiftTime = '16:00 - 21:00';
+//       } else if (rowIndex > 1 && rowIndex < 5) {
+//         if (dayIndex % 3 === 0) {
+//           shiftType = 'Shift 1';
+//           shiftTime = '10:00 - 16:00';
+//         } else if (dayIndex % 3 === 1) {
+//           shiftType = 'Shift 2';
+//           shiftTime = '16:00 - 21:00';
+//         }
+//       } else if (rowIndex === 5 && dayIndex === 2) {
+//         shiftType = 'Shift 1';
+//         shiftTime = '10:00 - 16:00';
+//       }
+
+//       return (
+//         <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
+//           <ShiftBox type={shiftType}>
+//             <div>{shiftType}</div>
+//             <div>{shiftTime}</div>
+//           </ShiftBox>
+//         </TableCell>
+//       );
+//     })}
+//   </>
+// ))}
+// </ScheduleTable> */}
