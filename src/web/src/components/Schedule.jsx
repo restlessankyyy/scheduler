@@ -273,7 +273,7 @@ const Schedule = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(41);
-  const navigate = useNavigate(); // Använd useNavigate
+  const navigate = useNavigate(); 
   
   const [shiftData, setShiftData] = useState(
     Array(6).fill().map(() => Array(7).fill('Unavailable'))
@@ -305,7 +305,6 @@ const Schedule = () => {
       const newShiftData = prevShiftData.map((row, rIdx) =>
         row.map((shift, dIdx) => {
           if (rIdx === rowIndex && dIdx === dayIndex) {
-            // Cykla mellan 'Shift 1', 'Shift 2', och 'Unavailable'
             if (shift === 'Unavailable') return 'Shift 1';
             if (shift === 'Shift 1') return 'Shift 2';
             return 'Unavailable';
@@ -350,26 +349,23 @@ const Schedule = () => {
       </SortOptions>
       <Divider />
       <ScheduleTable>
-  {/* Kolumnrubriker */}
+
   <TableHeader>Week {selectedWeek}</TableHeader>
   {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
     <TableHeader key={day}>{day}</TableHeader>
   ))}
 
-  {/* Rader för anställda */}
   {employees.slice(0, 6).map((employee, rowIndex) => (
     <React.Fragment key={employee.id}>
-      {/* Första kolumnen: anställds info */}
+
       <TableCell key={`employee-${employee.id}`}>
         <EmployeeInfo>
           <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
           <EmployeeName>{employee.name}</EmployeeName>
         </EmployeeInfo>
       </TableCell>
-
-      {/* Skiftceller */}
       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
-        // Använd shiftData för att avgöra skifttyp och tid
+
         const shiftType = shiftData[rowIndex][dayIndex];
         const shiftTime = shiftType === 'Shift 1' ? '10:00 - 16:00' : 
                           shiftType === 'Shift 2' ? '16:00 - 21:00' : 
@@ -387,15 +383,6 @@ const Schedule = () => {
     </React.Fragment>
   ))}
 </ScheduleTable>
-
-
-      {/* <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        views={['month', 'week']}
-      /> */}
 <ChartContainer>
       <ChartWrapper>
         <ChartTitle>Schemafyllnad</ChartTitle>
@@ -446,59 +433,3 @@ const Schedule = () => {
 
 export default Schedule;
 
-
-// {/* <ScheduleTable>
-// {/* Kolumnrubriker */}
-// <TableHeader>Week {selectedWeek}</TableHeader>
-// {['Mon 7', 'Tue 8', 'Wed 9', 'Thu 10', 'Fri 11', 'Sat 12', 'Sun 13'].map((day) => (
-//   <TableHeader key={day}>{day}</TableHeader>
-// ))}
-
-// {/* Rader för anställda */}
-// {employees.slice(0, 6).map((employee, rowIndex) => (
-//   <>
-//     {/* Första kolumnen: anställds info */}
-//     <TableCell key={`employee-${employee.id}`}>
-//       <EmployeeInfo>
-//         <EmployeeImage src={defaultPersonIcon} alt={employee.name} />
-//         <EmployeeName>{employee.name}</EmployeeName>
-//       </EmployeeInfo>
-//     </TableCell>
-
-//     {/* Skiftceller */}
-//     {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, dayIndex) => {
-//       // Generera skiftdata baserat på rad och kolumnindex
-//       let shiftType = 'Unavailable';
-//       let shiftTime = 'All day';
-      
-//       if (rowIndex === 0 && dayIndex < 5) {
-//         shiftType = 'Shift 1';
-//         shiftTime = '10:00 - 16:00';
-//       } else if (rowIndex === 1 && dayIndex % 2 === 0 && dayIndex < 6) {
-//         shiftType = 'Shift 2';
-//         shiftTime = '16:00 - 21:00';
-//       } else if (rowIndex > 1 && rowIndex < 5) {
-//         if (dayIndex % 3 === 0) {
-//           shiftType = 'Shift 1';
-//           shiftTime = '10:00 - 16:00';
-//         } else if (dayIndex % 3 === 1) {
-//           shiftType = 'Shift 2';
-//           shiftTime = '16:00 - 21:00';
-//         }
-//       } else if (rowIndex === 5 && dayIndex === 2) {
-//         shiftType = 'Shift 1';
-//         shiftTime = '10:00 - 16:00';
-//       }
-
-//       return (
-//         <TableCell key={`shift-${rowIndex}-${dayIndex}`} onClick={() => handleShiftChange(rowIndex, dayIndex)}>
-//           <ShiftBox type={shiftType}>
-//             <div>{shiftType}</div>
-//             <div>{shiftTime}</div>
-//           </ShiftBox>
-//         </TableCell>
-//       );
-//     })}
-//   </>
-// ))}
-// </ScheduleTable> */}
