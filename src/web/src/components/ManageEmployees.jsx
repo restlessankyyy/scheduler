@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useQuery, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'; // Importera useNavigate
 import defaultPersonIcon from '../assets/profile.png';
+import EmployeeProfile from './EmployeeProfile'; // Importera den nya komponenten
+
 
 const GET_EMPLOYEES_QUERY = gql`
   query GetEmployees {
@@ -151,12 +153,18 @@ const ManageEmployees = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES_QUERY);
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate(); // Använd useNavigate
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
 
   useEffect(() => {
     if (data) {
       setEmployees(data.employees);
     }
   }, [data]);
+
+  const handleProfileClick = (employee) => {
+    setSelectedEmployee(employee);
+  };
 
   if (loading) return <p>Loading employees...</p>;
   if (error) return <p>Error loading employees!</p>;
@@ -170,7 +178,7 @@ const ManageEmployees = () => {
         </div>
         <AddEmployeeButton onClick={() => navigate('/add-employee')}>Add employee</AddEmployeeButton>
       </HeaderSection>
-
+  
       <SortOptions>
         <SortItem>Name ▼</SortItem>
         <SortItem>Location ▼</SortItem>
@@ -178,27 +186,34 @@ const ManageEmployees = () => {
         <SortItem>Availability ▼</SortItem>
         <SortItem>{employees.length} / 23 employees</SortItem>
       </SortOptions>
-
-      <EmployeeList>
-        {employees.map((employee) => (
-          <EmployeeCard key={employee.id}>
-            <EmployeeImage src={defaultPersonIcon} alt={`${employee.name}`} />
-            <EmployeeInfo>
-              <EmployeeName>{employee.name}</EmployeeName>
-              <EmployeeDetails>{employee.department}</EmployeeDetails>
-              <EmployeeDetails>{employee.city}, Sverige</EmployeeDetails>
-            </EmployeeInfo>
-            <ProfileButton>Profile</ProfileButton>
-          </EmployeeCard>
-        ))}
-      </EmployeeList>
-
-      <Footer>
-        <Input placeholder="Send a message..." />
-        <SendButton>➔</SendButton>
-      </Footer>
+  
+      {selectedEmployee ? (
+        <EmployeeProfile employee={selectedEmployee} />
+      ) : (
+        <>
+          <EmployeeList>
+            {employees.map((employee) => (
+              <EmployeeCard key={employee.id}>
+                <EmployeeImage src={defaultPersonIcon} alt={`${employee.name}`} />
+                <EmployeeInfo>
+                  <EmployeeName>{employee.name}</EmployeeName>
+                  <EmployeeDetails>{employee.department}</EmployeeDetails>
+                  <EmployeeDetails>{employee.city}, Sverige</EmployeeDetails>
+                </EmployeeInfo>
+                <ProfileButton onClick={() => setSelectedEmployee(employee)}>Profile</ProfileButton>
+              </EmployeeCard>
+            ))}
+          </EmployeeList>
+          
+          <Footer>
+            <Input placeholder="Send a message..." />
+            <SendButton>➔</SendButton>
+          </Footer>
+        </>
+      )}
     </Container>
   );
+  
 };
 
 export default ManageEmployees;
