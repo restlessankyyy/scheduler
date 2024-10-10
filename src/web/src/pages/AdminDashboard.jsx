@@ -45,7 +45,7 @@ const AdminDashboard = () => {
       <AdminNavbar onSelect={setActiveComponent} />
       <MainContent>
       <UserHeader />
-        <Header />
+        {/* <Header /> */}
         {renderComponent()}
       </MainContent>
     </DashboardGrid>

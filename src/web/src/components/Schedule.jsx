@@ -180,7 +180,7 @@ const ChartContainer = styled.div`
   align-items: center;
   // margin-top: 2rem;
   // margin-bottom: 2rem;
-  width: 70%;
+  width: 50%;
   margin: 2rem auto;
 `;
 
@@ -199,7 +199,7 @@ const ChartTitle = styled.h3`
 `;
 
 const SmallCircularProgressbar = styled(CircularProgressbar)`
-  width: 60%; // Reducerar storleken till 60% av standardstorleken
+  width: 40%; // Reducerar storleken till 60% av standardstorleken
 `;
 
 const locales = { sv };
@@ -475,7 +475,7 @@ const Schedule = () => {
 
       <ChartContainer>
         <ChartWrapper>
-          <ChartTitle>Schemafyllnad</ChartTitle>
+          <ChartTitle>Schedule Completeness</ChartTitle>
 
           <SmallCircularProgressbar
             value={progressData.completed}
@@ -488,7 +488,7 @@ const Schedule = () => {
 
         </ChartWrapper>
         <ChartWrapper>
-          <ChartTitle>Reservtillgänglighet</ChartTitle>
+          <ChartTitle>Critical Shifts Backup </ChartTitle>
           <SmallCircularProgressbar
             value={progressData.backup}
             text={`${progressData.backup}%`}
@@ -499,7 +499,7 @@ const Schedule = () => {
           />
         </ChartWrapper>
         <ChartWrapper>
-          <ChartTitle>Matchning av preferenser</ChartTitle>
+          <ChartTitle>Preference Match</ChartTitle>
           <SmallCircularProgressbar
             value={progressData.preferences}
             text={`${progressData.preferences}%`}
